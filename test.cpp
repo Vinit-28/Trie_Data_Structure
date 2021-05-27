@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 #include "Trie.h"
 
 using namespace std;
@@ -8,18 +9,28 @@ int main(){
 
     Trie<char> trie;
     
-    cout<<"\nInserting abcd in Trie.... is abcd already exits -> "<<trie.insert((char*)"abcd",4);
-
-    cout<<"\nInserting abc in Trie.... is abc already exits -> "<<trie.insert((char*)"abc",3);
-
-    cout<<"\nInserting ab in Trie.... is ab already exits -> "<<trie.insert((char*)"ab",2);
-
-    cout<<"\nInserting abcde in Trie.... is abcde already exits -> "<<trie.insert((char*)"abcde",5);
-
-    cout<<"\n\nTotal Length -> "<<trie.get_total_length()<<endl;
-    cout<<"Total Distinct Length -> "<<trie.get_distinct_length()<<endl;
+    
+    trie.insert( (char*)"abcd", 4 );
+    trie.insert( (char*)"abc", 3 );
+    trie.insert( (char*)"ab", 2 );
+    trie.insert( (char*)"abcde", 5 );
 
 
+    vector<vector<char>> routes = trie.get_paths();
+
+    cout<<"\nSequence of Nodes in the Trie ::\n\n";
+
+    for(int i=0; i<routes.size(); i++){
+
+        for(int j=0; j<routes[i].size(); j++){
+            
+            cout<<routes[i][j]<<"\t";
+        }
+        cout<<endl;
+    }
+
+    
     cout<<endl;
     return 0;
 }
+
