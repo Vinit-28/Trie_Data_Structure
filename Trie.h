@@ -144,7 +144,7 @@ int Trie<DataType>::get_total_length(){
 
 
 
-// Member Function Description //
+// Member Function to get all the paths or routes available in the trie //
 template<class DataType>
 vector<vector<DataType>> Trie<DataType>::get_paths(){
 
@@ -155,7 +155,7 @@ vector<vector<DataType>> Trie<DataType>::get_paths(){
 
 
 
-// Member Function Description //
+// Member Function to visit each node or path recursively //
 template<class DataType>
 void Trie<DataType>::visit_every_path(vector<DataType> path, vector<vector<DataType>> &routes, Node<DataType> *curr_pos){
     
