@@ -18,6 +18,7 @@ class Node{
 
 
 
+// Class Trie to Implement the Functionalities of the Trie Data Structure //
 template<class DataType>
 class Trie{
 
@@ -25,6 +26,9 @@ class Trie{
         // Declaration of Private Data Members //
         Node<DataType> *root = (Node<DataType>*)malloc(sizeof(Node<DataType>)) ;
         int total_length=0, total_distinct_length=0;
+
+        // Declaration of Private Member Functions //
+        void visit_every_path(vector<DataType> path, vector<vector<DataType>> &routes, Node<DataType> *curr_pos);
 
     public:
         // Declaration of Public Member Functions //
@@ -34,11 +38,13 @@ class Trie{
         int get_distinct_length();
         int get_total_length();
 
+        vector<vector<DataType>> get_paths();
+
 };
 
 
 
-// Class Trie's Public Member Functions Definitions //
+// Class Trie's Member Functions Definitions //
 
 
 
@@ -122,7 +128,7 @@ bool Trie<DataType>::is_exists(DataType data[], int datalen){
 
 
 
-// Member Function Description //
+// Member Function to get the distinct length or total distinct elements present in the trie //
 template<class DataType>
 int Trie<DataType>::get_distinct_length(){
     return total_distinct_length;
@@ -130,7 +136,7 @@ int Trie<DataType>::get_distinct_length(){
 
 
 
-// Member Function Description //
+// Member Function to get the total length of the trie or total elements presents in the trie //
 template<class DataType>
 int Trie<DataType>::get_total_length(){
     return total_length;
@@ -138,7 +144,37 @@ int Trie<DataType>::get_total_length(){
 
 
 
-// End of Class Trie's Public Member Functions Definitions //
+// Member Function Description //
+template<class DataType>
+vector<vector<DataType>> Trie<DataType>::get_paths(){
+
+    vector<vector<DataType>> routes;
+    visit_every_path({}, routes, root);
+    return routes;
+}
+
+
+
+// Member Function Description //
+template<class DataType>
+void Trie<DataType>::visit_every_path(vector<DataType> path, vector<vector<DataType>> &routes, Node<DataType> *curr_pos){
+    
+    if( curr_pos->is_end ){
+        
+        routes.push_back(path);
+    }
+
+    for(int i=0; i<curr_pos->childrens.size(); i++){
+
+        path.push_back(curr_pos->childrens[i]->data);
+        visit_every_path(path,routes,curr_pos->childrens[i]);
+        path.pop_back();
+    }
+
+}
+
+// End of Class Trie's Member Functions Definitions //
+
 
 
 
