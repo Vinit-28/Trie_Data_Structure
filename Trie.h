@@ -76,15 +76,28 @@ bool Trie<DataType>::insert(DataType data[], int datalen){
             is_exists = false;
         }
     }
+    if( is_exists && temp->is_end ){
 
-    if( ! (is_exists) ){
-        total_distinct_length+=1;
+        // Element is Repeated //
+        return false; 
     }
 
-    total_length+=1;
+    else if ( is_exists == false ){
+        
+        // Element is Unique //
+        temp->is_end=true;
+        total_distinct_length+=1, total_length+=1; 
+        return true; 
+    }
 
-    temp->is_end=true;
-    return is_exists;
+    else{
+
+        // Element exists but not repeated //
+        temp->is_end=true;
+        total_length+=1;
+    }
+
+    return true;
 }
 
 
