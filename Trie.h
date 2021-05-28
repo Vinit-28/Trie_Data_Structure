@@ -26,14 +26,18 @@ class Trie{
         // Declaration of Private Data Members //
         Node<DataType> *root = (Node<DataType>*)malloc(sizeof(Node<DataType>)) ;
         int total_length=0, total_distinct_length=0;
+        bool is_found;
 
         // Declaration of Private Member Functions //
         void visit_every_path(vector<DataType> path, vector<vector<DataType>> &routes, Node<DataType> *curr_pos);
+        vector<Node<DataType>*> get_specified_path(DataType data[], int datalen);
+        void erase_node_element_from_path(vector<Node<DataType>*> &path, Node<DataType> *node_element);
 
     public:
         // Declaration of Public Member Functions //
         bool insert(DataType data[], int datalen);
         bool is_exists(DataType data[], int datalen);
+        bool remove(DataType data[], int datalen);
 
         int get_distinct_length();
         int get_total_length();
@@ -185,6 +189,116 @@ void Trie<DataType>::visit_every_path(vector<DataType> path, vector<vector<DataT
     }
 
 }
+
+
+
+// Member Function to get the path/route of an specific data //
+template<class DataType>
+vector<Node<DataType>*> Trie<DataType>::get_specified_path(DataType data[], int datalen){
+
+    vector<Node<DataType>*> path;
+    Node<DataType> *temp = root;
+    bool element_found;
+
+
+    for(int i=0; i<datalen; i++){
+
+        element_found = false;
+        for(int j=0; j<temp->childrens.size(); j++){
+
+            if(data[i] == temp->childrens[j]->data){
+
+                temp = temp->childrens[j];
+                element_found = true;
+                break;
+            }
+        }
+        if(element_found == false){
+
+            is_found=false;
+            return path;
+        }
+
+        path.push_back(temp);
+    }
+    is_found=true;
+    return path;
+
+}
+
+
+
+// Member Function to erase the node elements from the path/route //
+template<class DataType>
+void Trie<DataType>::erase_node_element_from_path(vector<Node<DataType>*> &path, Node<DataType> *node_element){
+
+    int path_len = path.size();
+    for(int i=0; i<path_len; i++){
+
+        if( node_element == path[i] ){
+
+            path.erase(path.begin()+i);
+            return;
+        }
+    }
+}
+
+
+
+// Member Function to remove data from the trie //
+template<class DataType>
+bool Trie<DataType>::remove(DataType data[], int datalen){
+
+    vector<Node<DataType>*> path = get_specified_path(data,datalen);
+    
+    if(is_found==false)
+        return is_found;
+
+    int path_len = path.size();
+
+    if( path[path_len-1]->childrens.empty() == false ){
+
+        path[path_len-1]->is_end=false;
+    }
+    else{
+
+        if( path_len==1 ){
+
+            erase_node_element_from_path(root->childrens,path[0]);
+        }
+        else{
+
+            
+            erase_node_element_from_path(path[path_len-2]->childrens, path[path_len-1]);
+            path_len-=1;
+
+            for(int i=path_len-1; i>=0; i--){
+                
+                if( path[i]->childrens.empty() == false || path[i]->is_end == true ){
+                    
+                    return true;
+                }
+                else{
+
+                    if( i==0 ){
+                        
+                        erase_node_element_from_path(root->childrens,path[i]);
+                    }
+                    else{
+
+                        erase_node_element_from_path(path[i-1]->childrens,path[i]);
+                    }
+                }
+
+            }
+
+        }
+    }
+    
+    return true;
+}
+
+
 
 // End of Class Trie's Member Functions Definitions //
 
