@@ -18,6 +18,8 @@ int main(){
 
     cout<<"\nResult of insertion of Reapeated Element abcde ( successfull->1 || unsuccessfull->0 ) :: "<<trie.insert((char*)"abcde",5);
 
+    cout<<"\nResult of deletion of abc ( successfull->1 || unsuccessfull->0 ) :: "<<trie.remove( (char*)"abc", 3 );
+
 
     vector<vector<char>> routes = trie.get_paths();
 
